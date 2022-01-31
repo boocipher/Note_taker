@@ -38,10 +38,28 @@ app.post('/api/notes', (req, res) => {
     notesData.push(newNote);
 
     writeToFile('./db/db.json', notesData);
-    
+
   res.json(newNote);
  });
  
+ app.delete('/api/notes/:id', (req, res) => {
+    // Logic to delete a note with id
+    const noteToDelete = req.params.id;
+    console.log('the note to delete has id of : ',noteToDelete)
+    let index = -1;
+    for (let i=0; i < notesData.length; i++) {
+        if (noteToDelete === notesData[i].id){
+            index = i;
+        }
+    }
+    if (index > -1) {
+        notesData.splice(index, 1);
+        writeToFile('./db/db.json', notesData);
+        return res.json('Note deleted')
+    }
+    return res.json('Note not found')
+   });
+   
 
 app.listen(PORT, () =>
   console.log(`Example app listening at http://localhost:${PORT}`)
