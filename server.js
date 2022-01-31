@@ -2,6 +2,7 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const { v4: uuidv4 } = require('uuid');
 
 // Require the JSON file and assign it to a variable called `termData`
 const notesData = require('./db/db.json');
@@ -9,6 +10,12 @@ const PORT = 3001;
 
 // Initialize our app variable by setting it to the value of express()
 const app = express();
+
+// Function to write data to the JSON file given a destination and some content
+const writeToFile = (destination, content) =>
+  fs.writeFile(destination, JSON.stringify(content, null, 4), (err) =>
+    err ? console.error(err) : console.info(`\nData written to ${destination}`)
+  );
 
 // Middleware for parsing JSON and urlencoded form data
 app.use(express.json());
@@ -25,9 +32,13 @@ app.get('/api/notes', (req, res) => res.json(notesData));
 app.post('/api/notes', (req, res) => {
     console.info(`${req.method} request received to add a note`);
     const newNote = req.body
-    console.log('note received: ', newNote)
-    // writeToFile(destination, newReview)
- 
+    console.log('note received: ', newNote);
+    newNote.id = uuidv4();
+    console.log('note w ID: ', newNote);
+    notesData.push(newNote);
+
+    writeToFile('./db/db.json', notesData);
+    
   res.json(newNote);
  });
  
