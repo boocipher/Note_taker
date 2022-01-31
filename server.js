@@ -12,10 +12,11 @@ const app = express();
 
 app.use(express.static('public'));
 
-app.get('/notes', (req, res) => res.sendFile(path.join(__dirname, '/public/notes.html')));
+app.get('/notes', (req, res) => res.sendFile(path.join(__dirname, '/public/notes.html'))); //serves notes.html
+// app.get('/api/notes', (req, res) => res.sendFile(path.join(__dirname, '/public/notes.html')));
 
 // res.json() allows us to return JSON instead of a buffer, string, or static file
-app.get('/api', (req, res) => res.json(termData));
+app.get('/api/notes', (req, res) => res.json(notesData));
 
 app.listen(PORT, () =>
   console.log(`Example app listening at http://localhost:${PORT}`)
