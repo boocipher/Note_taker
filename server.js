@@ -6,7 +6,7 @@ const { v4: uuidv4 } = require('uuid');
 
 // Require the JSON file and assign it to a variable called `termData`
 const notesData = require('./db/db.json');
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 // Initialize our app variable by setting it to the value of express()
 const app = express();
